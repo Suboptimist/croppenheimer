@@ -1,0 +1,376 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C4000000000000000000101 /* CroppenheimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4000000000000000000003 /* CroppenheimerApp.swift */; };
+		C4000000000000000000102 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4000000000000000000004 /* WebView.swift */; };
+		C4000000000000000000103 /* CroppenheimerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4000000000000000000005 /* CroppenheimerWidget.swift */; };
+		C4000000000000000000104 /* Croppenheimer.html in Resources */ = {isa = PBXBuildFile; fileRef = C4000000000000000000006 /* Croppenheimer.html */; };
+		C4000000000000000000105 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C4000000000000000000010 /* AppIcon.icns */; };
+		C4000000000000000000109 /* Assets.car in Resources */ = {isa = PBXBuildFile; fileRef = C4000000000000000000013 /* Assets.car */; };
+		C4000000000000000000106 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4000000000000000000011 /* WidgetKit.framework */; };
+		C4000000000000000000107 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4000000000000000000012 /* SwiftUI.framework */; };
+		C4000000000000000000108 /* CroppenheimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C4000000000000000000002 /* CroppenheimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C4000000000000000000405 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4000000000000000000403 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C4000000000000000000402;
+			remoteInfo = CroppenheimerWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C4000000000000000000304 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C4000000000000000000108 /* CroppenheimerWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		C4000000000000000000001 /* Croppenheimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Croppenheimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4000000000000000000002 /* CroppenheimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CroppenheimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4000000000000000000003 /* CroppenheimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CroppenheimerApp.swift; sourceTree = "<group>"; };
+		C4000000000000000000004 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		C4000000000000000000005 /* CroppenheimerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CroppenheimerWidget.swift; sourceTree = "<group>"; };
+		C4000000000000000000006 /* Croppenheimer.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Croppenheimer.html; sourceTree = "<group>"; };
+		C4000000000000000000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C4000000000000000000008 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C4000000000000000000009 /* CroppenheimerWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CroppenheimerWidget.entitlements; sourceTree = "<group>"; };
+		C4000000000000000000010 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
+		C4000000000000000000013 /* Assets.car */ = {isa = PBXFileReference; lastKnownFileType = file; path = Assets.car; sourceTree = "<group>"; };
+		C4000000000000000000011 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		C4000000000000000000012 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C4000000000000000000302 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C4000000000000000000306 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4000000000000000000106 /* WidgetKit.framework in Frameworks */,
+				C4000000000000000000107 /* SwiftUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C4000000000000000000201 = {
+			isa = PBXGroup;
+			children = (
+				C4000000000000000000006 /* Croppenheimer.html */,
+				C4000000000000000000202 /* App */,
+				C4000000000000000000203 /* Widget */,
+				C4000000000000000000205 /* Frameworks */,
+				C4000000000000000000204 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C4000000000000000000202 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				C4000000000000000000003 /* CroppenheimerApp.swift */,
+				C4000000000000000000004 /* WebView.swift */,
+				C4000000000000000000007 /* Info.plist */,
+				C4000000000000000000010 /* AppIcon.icns */,
+				C4000000000000000000013 /* Assets.car */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		C4000000000000000000203 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				C4000000000000000000005 /* CroppenheimerWidget.swift */,
+				C4000000000000000000008 /* Info.plist */,
+				C4000000000000000000009 /* CroppenheimerWidget.entitlements */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+		C4000000000000000000204 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C4000000000000000000001 /* Croppenheimer.app */,
+				C4000000000000000000002 /* CroppenheimerWidgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C4000000000000000000205 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C4000000000000000000011 /* WidgetKit.framework */,
+				C4000000000000000000012 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C4000000000000000000401 /* Croppenheimer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C4000000000000000000602 /* Build configuration list for PBXNativeTarget "Croppenheimer" */;
+			buildPhases = (
+				C4000000000000000000301 /* Sources */,
+				C4000000000000000000302 /* Frameworks */,
+				C4000000000000000000303 /* Resources */,
+				C4000000000000000000304 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C4000000000000000000404 /* PBXTargetDependency */,
+			);
+			name = Croppenheimer;
+			productName = Croppenheimer;
+			productReference = C4000000000000000000001 /* Croppenheimer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C4000000000000000000402 /* CroppenheimerWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C4000000000000000000603 /* Build configuration list for PBXNativeTarget "CroppenheimerWidgetExtension" */;
+			buildPhases = (
+				C4000000000000000000305 /* Sources */,
+				C4000000000000000000306 /* Frameworks */,
+				C4000000000000000000307 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CroppenheimerWidgetExtension;
+			productName = CroppenheimerWidgetExtension;
+			productReference = C4000000000000000000002 /* CroppenheimerWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C4000000000000000000403 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = C4000000000000000000601 /* Build configuration list for PBXProject "Croppenheimer" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C4000000000000000000201;
+			productRefGroup = C4000000000000000000204 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C4000000000000000000401 /* Croppenheimer */,
+				C4000000000000000000402 /* CroppenheimerWidgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C4000000000000000000303 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4000000000000000000104 /* Croppenheimer.html in Resources */,
+				C4000000000000000000105 /* AppIcon.icns in Resources */,
+				C4000000000000000000109 /* Assets.car in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C4000000000000000000307 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C4000000000000000000301 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4000000000000000000101 /* CroppenheimerApp.swift in Sources */,
+				C4000000000000000000102 /* WebView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C4000000000000000000305 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4000000000000000000103 /* CroppenheimerWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C4000000000000000000404 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C4000000000000000000402 /* CroppenheimerWidgetExtension */;
+			targetProxy = C4000000000000000000405 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C4000000000000000000501 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C4000000000000000000502 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C4000000000000000000503 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.andreasmannegren.croppenheimer2;
+				PRODUCT_NAME = Croppenheimer;
+			};
+			name = Debug;
+		};
+		C4000000000000000000504 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.andreasmannegren.croppenheimer2;
+				PRODUCT_NAME = Croppenheimer;
+			};
+			name = Release;
+		};
+		C4000000000000000000505 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Widget/CroppenheimerWidget.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.andreasmannegren.croppenheimer2.widget;
+				PRODUCT_NAME = CroppenheimerWidgetExtension;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C4000000000000000000506 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Widget/CroppenheimerWidget.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.andreasmannegren.croppenheimer2.widget;
+				PRODUCT_NAME = CroppenheimerWidgetExtension;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C4000000000000000000601 /* Build configuration list for PBXProject "Croppenheimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4000000000000000000501 /* Debug */,
+				C4000000000000000000502 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C4000000000000000000602 /* Build configuration list for PBXNativeTarget "Croppenheimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4000000000000000000503 /* Debug */,
+				C4000000000000000000504 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C4000000000000000000603 /* Build configuration list for PBXNativeTarget "CroppenheimerWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4000000000000000000505 /* Debug */,
+				C4000000000000000000506 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C4000000000000000000403 /* Project object */;
+}

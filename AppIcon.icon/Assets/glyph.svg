@@ -1,0 +1,12 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rune mark: an X whose lower arms continue into a diamond below the crossing.
+       Arms are collinear with the diamond's upper sides so the strokes read as
+       two continuous lines. Butt caps give the squared tips of the reference. -->
+  <g fill="none" stroke="#26262B" stroke-width="53" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="8">
+    <!-- diamond -->
+    <path d="M 512 384.5 L 724.5 618.25 L 512 852 L 299.5 618.25 Z"/>
+    <!-- upper X arms, extending the diamond's top sides through the crossing -->
+    <path d="M 318.8 172 L 512 384.5"/>
+    <path d="M 705.2 172 L 512 384.5"/>
+  </g>
+</svg>

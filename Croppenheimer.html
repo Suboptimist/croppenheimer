@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Croppenheimer</title>
+<style>
+  :root{
+    color-scheme: light dark;
+    --accent:#f5a623;
+    --accent-2:#ffd23f;
+    --on-accent:#26262a;
+    --accent-glow:rgba(245,166,35,.42);
+    --text:#1d1d1f;
+    --muted:rgba(60,60,67,.62);
+    --panel-bg:rgba(255,255,255,.5);
+    --panel-border:rgba(255,255,255,.62);
+    --panel-shadow:0 18px 44px rgba(20,28,55,.18);
+    --control-bg:rgba(255,255,255,.4);
+    --control-border:rgba(25,30,55,.14);
+    --control-hover:rgba(255,255,255,.66);
+    --stage-bg:rgba(255,255,255,.28);
+    --stage-border:rgba(255,255,255,.5);
+    --inset-hi:inset 0 1px 0 rgba(255,255,255,.5);
+    --warning:#b3541e;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --accent:#f7b733;
+      --accent-2:#ffd75e;
+      --accent-glow:rgba(247,183,51,.4);
+      --text:#f5f5f7;
+      --muted:rgba(235,235,245,.6);
+      --panel-bg:rgba(30,30,36,.42);
+      --panel-border:rgba(255,255,255,.14);
+      --panel-shadow:0 18px 44px rgba(0,0,0,.5);
+      --control-bg:rgba(255,255,255,.08);
+      --control-border:rgba(255,255,255,.16);
+      --control-hover:rgba(255,255,255,.15);
+      --stage-bg:rgba(10,10,14,.3);
+      --stage-border:rgba(255,255,255,.12);
+      --inset-hi:inset 0 1px 0 rgba(255,255,255,.09);
+      --warning:#f0a35e;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background:transparent;
+    color:var(--text);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:32px 16px;
+    min-height:100vh;
+  }
+  .app{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    align-items:stretch;
+    justify-content:center;
+  }
+  .panel{
+    background:var(--panel-bg);
+    -webkit-backdrop-filter:blur(26px) saturate(180%);
+    backdrop-filter:blur(26px) saturate(180%);
+    border:1px solid var(--panel-border);
+    border-radius:22px;
+    padding:20px;
+    box-shadow:var(--panel-shadow), var(--inset-hi);
+  }
+  .controls{
+    width:260px;
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    height:fit-content;
+  }
+  .upload-btn{
+    display:block;
+    text-align:center;
+    padding:11px 14px;
+    border-radius:12px;
+    background:linear-gradient(180deg,var(--accent-2),var(--accent));
+    color:var(--on-accent);
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    border:1px solid rgba(255,255,255,.32);
+    box-shadow:0 6px 16px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.45);
+  }
+  .upload-btn:hover{ filter:brightness(1.06); }
+  .upload-btn:active{ filter:brightness(.95); }
+  input[type=file]{ display:none; }
+  .section-label{
+    font-size:12px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .ratio-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .ratio-btn{
+    padding:9px 6px;
+    border-radius:11px;
+    border:1px solid var(--control-border);
+    background:var(--control-bg);
+    color:var(--text);
+    font-size:13px;
+    cursor:pointer;
+    text-align:center;
+    box-shadow:var(--inset-hi);
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .ratio-btn:hover{
+    background:var(--control-hover);
+  }
+  .ratio-btn.active{
+    background:linear-gradient(180deg,var(--accent-2),var(--accent));
+    color:var(--on-accent);
+    font-weight:600;
+    border-color:rgba(255,255,255,.32);
+    box-shadow:0 4px 14px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.4);
+  }
+  .custom-ratio{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:8px;
+  }
+  .custom-ratio input{
+    width:60px;
+    flex-shrink:0;
+    padding:6px;
+    border:1px solid var(--control-border);
+    border-radius:9px;
+    font-size:13px;
+    background:var(--control-bg);
+    color:var(--text);
+  }
+  .custom-ratio span{ color:var(--muted); font-size:13px; }
+  .apply-custom{
+    flex:0 0 100%;
+    margin-top:4px;
+    padding:7px 10px;
+    border-radius:9px;
+    border:1px solid var(--control-border);
+    background:var(--control-bg);
+    color:var(--text);
+    font-size:12px;
+    cursor:pointer;
+    box-shadow:var(--inset-hi);
+    transition:background .15s ease;
+  }
+  .apply-custom:hover{
+    background:var(--control-hover);
+  }
+  .custom-simplified{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+  .calc-note{
+    font-size:12px;
+    color:var(--muted);
+    margin:0 0 8px;
+  }
+  .calc-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .calc-field label{
+    display:block;
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:4px;
+  }
+  .calc-field input{
+    width:100%;
+    padding:6px;
+    border:1px solid var(--control-border);
+    border-radius:9px;
+    font-size:13px;
+    background:var(--control-bg);
+    color:var(--text);
+  }
+  .calc-checkbox{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:10px;
+    cursor:pointer;
+  }
+  .calc-checkbox input{ margin:0; }
+  .calc-checkbox:has(input:disabled){
+    opacity:.45;
+    cursor:not-allowed;
+  }
+  .calc-warning{
+    font-size:11px;
+    color:var(--warning);
+    margin-top:6px;
+  }
+  input[type=range]{ width:100%; accent-color:var(--accent); }
+  input[type=checkbox]{ accent-color:var(--accent); }
+  input:focus-visible, select:focus-visible{
+    outline:2px solid rgba(245,166,35,.65);
+    outline-offset:1px;
+  }
+  select{
+    width:100%;
+    padding:7px;
+    border-radius:9px;
+    border:1px solid var(--control-border);
+    background:var(--control-bg);
+    color:var(--text);
+    font-size:13px;
+  }
+  .download-btn{
+    padding:13px;
+    border-radius:13px;
+    background:linear-gradient(180deg,var(--accent-2),var(--accent));
+    color:var(--on-accent);
+    border:1px solid rgba(255,255,255,.32);
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 8px 20px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.45);
+  }
+  .download-btn:hover:not(:disabled){
+    filter:brightness(1.06);
+  }
+  .download-btn:disabled{
+    background:var(--control-bg);
+    color:var(--muted);
+    border:1px solid var(--control-border);
+    box-shadow:none;
+    cursor:not-allowed;
+  }
+  .stage-wrap{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-width:0;
+    width:100%;
+  }
+  .stage{
+    position:relative;
+    flex:1 1 auto;
+    width:auto;
+    max-width:100%;
+    aspect-ratio:1/1;
+    background:var(--stage-bg);
+    -webkit-backdrop-filter:blur(26px) saturate(160%);
+    backdrop-filter:blur(26px) saturate(160%);
+    border:1px solid var(--stage-border);
+    border-radius:20px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    touch-action:none;
+    cursor:grab;
+    box-shadow:var(--panel-shadow), var(--inset-hi);
+  }
+  .stage.dragging{ cursor:grabbing; }
+  .placeholder{
+    color:var(--muted);
+    font-size:14px;
+    text-align:center;
+    padding:20px;
+    pointer-events:none;
+  }
+  .frame{
+    position:absolute;
+    box-shadow:0 0 0 2000px rgba(0,0,0,.55);
+    outline:2px solid rgba(255,255,255,.95);
+    pointer-events:none;
+  }
+  .grid-guide{
+    position:absolute;
+    display:none;
+    border:2px dashed var(--accent);
+    box-shadow:0 0 0 1px rgba(255,255,255,.85);
+    pointer-events:none;
+  }
+  .grid-guide::before,
+  .grid-guide::after{
+    content:'';
+    position:absolute;
+    background:var(--accent);
+    opacity:.6;
+  }
+  .grid-guide::before{
+    left:0; right:0; top:50%;
+    height:1px;
+    transform:translateY(-0.5px);
+  }
+  .grid-guide::after{
+    top:0; bottom:0; left:50%;
+    width:1px;
+    transform:translateX(-0.5px);
+  }
+  img.photo{
+    position:absolute;
+    top:0;
+    left:0;
+    transform-origin:top left;
+    user-select:none;
+    -webkit-user-drag:none;
+    pointer-events:none;
+  }
+  .hint{
+    margin-top:10px;
+    font-size:12px;
+    color:var(--muted);
+    text-align:center;
+  }
+  .stage-heading{
+    padding-bottom:20px;
+  }
+  .app-title{
+    font-family:Georgia,'Palatino Linotype',Palatino,'Book Antiqua',serif;
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:.01em;
+    margin:0 0 4px;
+    text-align:center;
+  }
+  .app-subtitle{
+    font-family:'Palatino Linotype',Palatino,Georgia,'Book Antiqua',serif;
+    font-size:17px;
+    font-style:italic;
+    font-weight:500;
+    color:var(--muted);
+    margin:0;
+    text-align:center;
+  }
+
+  @media (max-width: 1060px){
+    body{ padding:20px 12px; align-items:flex-start; }
+    .app{
+      flex-direction:column;
+      align-items:center;
+      width:100%;
+      max-width:480px;
+      margin:0 auto;
+      gap:20px;
+    }
+    .controls{
+      width:100%;
+    }
+    .stage-wrap{
+      flex:0 0 auto;
+      width:100%;
+    }
+    .stage{
+      flex:0 0 auto;
+      width:100%;
+      max-width:100%;
+    }
+    .stage-heading{ padding-bottom:14px; }
+    .app-title{ font-size:24px; }
+    .app-subtitle{ font-size:15px; }
+    .ratio-btn{ padding:12px 6px; }
+    .apply-custom{ padding:10px; }
+    .upload-btn{ padding:12px 14px; }
+    .download-btn{ padding:14px; }
+  }
+
+  @media (max-width: 360px){
+    .custom-ratio input{ width:52px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="panel controls">
+    <label class="upload-btn" for="fileInput">Choose Photo</label>
+    <input type="file" id="fileInput" accept="image/*">
+
+    <div>
+      <div class="section-label">Aspect Ratio</div>
+      <div class="ratio-grid" id="ratioGrid"></div>
+      <div class="custom-ratio">
+        <input type="number" id="customW" min="1" value="1">
+        <span>:</span>
+        <input type="number" id="customH" min="1" value="1">
+        <button class="apply-custom" id="applyCustom">Use custom</button>
+      </div>
+      <div class="custom-simplified" id="customSimplified"></div>
+    </div>
+
+    <div>
+      <div class="section-label">Aspect Ratio Calculator</div>
+      <p class="calc-note" id="calcNote">Using: Square 1:1</p>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Width (px)</label>
+          <input type="number" id="dimW" min="1" placeholder="e.g. 1920">
+        </div>
+        <div class="calc-field">
+          <label>Height (px)</label>
+          <input type="number" id="dimH" min="1" placeholder="e.g. 1080">
+        </div>
+      </div>
+      <label class="calc-checkbox">
+        <input type="checkbox" id="useExportSize" disabled>
+        Export at these exact pixel dimensions
+      </label>
+      <div class="calc-warning" id="exportSizeWarning"></div>
+    </div>
+
+    <div>
+      <div class="section-label">Zoom</div>
+      <input type="range" id="zoom" min="1" max="4" step="0.01" value="1">
+    </div>
+
+    <div>
+      <div class="section-label">Output format</div>
+      <select id="format">
+        <option value="jpeg">JPEG</option>
+        <option value="png">PNG</option>
+      </select>
+    </div>
+
+    <div>
+      <div class="section-label">Guides</div>
+      <label class="calc-checkbox">
+        <input type="checkbox" id="showGridGuide">
+        Show Instagram-grid (center square) guide
+      </label>
+    </div>
+
+    <button class="download-btn" id="downloadBtn" disabled>Download Cropped Photo</button>
+  </div>
+
+  <div class="stage-wrap">
+    <div class="stage-heading">
+      <div class="app-title">Croppenheimer</div>
+      <div class="app-subtitle">&ldquo;I am become breadth.&rdquo;</div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="placeholder" id="placeholder">Choose a photo, or drag one in here</div>
+    </div>
+    <div class="hint" id="hint"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // The stage is a responsive square (CSS aspect-ratio:1/1), so its pixel
+  // size changes with viewport width. All the crop/zoom/download math below
+  // works in "stage units" - STAGE always reflects the box's current
+  // rendered size in px, kept in sync by the ResizeObserver set up below.
+  let STAGE = 720;
+  const PRESETS = [
+    {label:'Square 1:1', w:1, h:1},
+    {label:'Portrait 4:5', w:4, h:5},
+    {label:'Story 9:16', w:9, h:16},
+    {label:'Landscape 16:9', w:16, h:9},
+  ];
+
+  const fileInput = document.getElementById('fileInput');
+  const stage = document.getElementById('stage');
+  const stageHeading = document.querySelector('.stage-heading');
+  const controlsPanel = document.querySelector('.controls');
+  const appEl = document.querySelector('.app');
+  const placeholder = document.getElementById('placeholder');
+  const ratioGrid = document.getElementById('ratioGrid');
+  const zoomSlider = document.getElementById('zoom');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const formatSelect = document.getElementById('format');
+  const hint = document.getElementById('hint');
+  const customW = document.getElementById('customW');
+  const customH = document.getElementById('customH');
+  const applyCustom = document.getElementById('applyCustom');
+  const customSimplified = document.getElementById('customSimplified');
+  const dimW = document.getElementById('dimW');
+  const dimH = document.getElementById('dimH');
+  const calcNote = document.getElementById('calcNote');
+  const useExportSize = document.getElementById('useExportSize');
+  const exportSizeWarning = document.getElementById('exportSizeWarning');
+  const showGridGuide = document.getElementById('showGridGuide');
+
+  let img = null;
+  let originalName = 'photo';
+  let naturalW = 0, naturalH = 0;
+  let ratio = PRESETS[0];
+  let frameW = 0, frameH = 0;
+  let baseScale = 1, zoomFactor = 1;
+  let imgX = 0, imgY = 0;
+  let frameEl = null, imgEl = null, guideEl = null;
+  let dragging = false, dragStartX=0, dragStartY=0, startImgX=0, startImgY=0;
+  let pinching = false, pinchStartDist = 0, pinchStartZoom = 1;
+
+  function buildRatioButtons(){
+    ratioGrid.innerHTML = '';
+    PRESETS.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'ratio-btn' + (i===0 ? ' active':'');
+      btn.textContent = p.label;
+      btn.addEventListener('click', () => selectRatio(p, btn));
+      ratioGrid.appendChild(btn);
+    });
+  }
+
+  function clearActiveButtons(){
+    document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+  }
+
+  function selectRatio(p, btnEl){
+    ratio = p;
+    clearActiveButtons();
+    if (btnEl) btnEl.classList.add('active');
+    layoutFrame();
+    if (img) fitImageToFrame();
+    syncDimFields();
+  }
+
+  applyCustom.addEventListener('click', () => {
+    const w = parseFloat(customW.value) || 1;
+    const h = parseFloat(customH.value) || 1;
+    const s = simplifyRatio(w, h);
+    customSimplified.textContent = (s.w === w && s.h === h) ? '' : ('= ' + s.w + ':' + s.h + ' simplified');
+    selectRatio({label:'Custom '+w+'x'+h, w, h}, null);
+  });
+
+  // ---- Aspect ratio calculator (one pair of boxes, both directions) ----
+  // - Type into just one box (the other left blank) and it fills in the
+  //   missing side using whichever ratio is currently active.
+  // - Type real values into both boxes and it works out the ratio those
+  //   dimensions describe, dropping the simplified result into the Custom
+  //   ratio fields above.
+  // A box that we filled in automatically is remembered as "derived" so
+  // that continuing to edit the other box keeps recalculating it against
+  // the active ratio, rather than immediately being treated as a manual
+  // pair of dimensions.
+  function gcd(a, b){
+    a = Math.round(Math.abs(a));
+    b = Math.round(Math.abs(b));
+    while (b){ [a, b] = [b, a % b]; }
+    return a || 1;
+  }
+
+  function simplifyRatio(w, h){
+    const g = gcd(w, h);
+    return { w: Math.round(w / g), h: Math.round(h / g) };
+  }
+
+  let wDerived = false, hDerived = false;
+
+  function updateCalcNote(){
+    const w = parseFloat(dimW.value);
+    const h = parseFloat(dimH.value);
+    if (!(w > 0) || !(h > 0)){
+      calcNote.textContent = 'Using: ' + ratio.label + ' — enter a width or height';
+      return;
+    }
+    const s = simplifyRatio(w, h);
+    const decimal = (w / h).toFixed(2);
+    calcNote.textContent = 'Ratio: ' + s.w + ':' + s.h + ' (' + decimal + ':1)';
+  }
+
+  // The export-at-exact-size option is only safe when the two boxes
+  // actually match the ratio currently being cropped to.
+  function validateExportSize(){
+    const w = parseFloat(dimW.value);
+    const h = parseFloat(dimH.value);
+    if (!(w > 0) || !(h > 0)){
+      useExportSize.checked = false;
+      useExportSize.disabled = true;
+      exportSizeWarning.textContent = '';
+      return;
+    }
+    const matches = Math.abs((w / h) - (ratio.w / ratio.h)) < 0.01;
+    useExportSize.disabled = !matches;
+    if (!matches){
+      useExportSize.checked = false;
+      exportSizeWarning.textContent = "Doesn't match the selected crop ratio (" + ratio.label + ')';
+    } else {
+      exportSizeWarning.textContent = '';
+    }
+  }
+
+  function pushRatioToCustom(w, h){
+    const s = simplifyRatio(w, h);
+    customW.value = s.w;
+    customH.value = s.h;
+    customSimplified.textContent = '= ' + s.w + ':' + s.h + ' simplified';
+  }
+
+  function onDimWInput(){
+    wDerived = false;
+    const wStr = dimW.value.trim();
+    const w = parseFloat(wStr);
+    const hStr = dimH.value.trim();
+    if (wStr && (hStr === '' || hDerived)){
+      if (w > 0){ dimH.value = Math.round(w * ratio.h / ratio.w); hDerived = true; }
+    } else if (wStr && hStr !== ''){
+      const h = parseFloat(hStr);
+      if (w > 0 && h > 0) pushRatioToCustom(w, h);
+    }
+    updateCalcNote();
+    validateExportSize();
+  }
+
+  function onDimHInput(){
+    hDerived = false;
+    const hStr = dimH.value.trim();
+    const h = parseFloat(hStr);
+    const wStr = dimW.value.trim();
+    if (hStr && (wStr === '' || wDerived)){
+      if (h > 0){ dimW.value = Math.round(h * ratio.w / ratio.h); wDerived = true; }
+    } else if (hStr && wStr !== ''){
+      const w = parseFloat(wStr);
+      if (w > 0 && h > 0) pushRatioToCustom(w, h);
+    }
+    updateCalcNote();
+    validateExportSize();
+  }
+
+  dimW.addEventListener('input', onDimWInput);
+  dimH.addEventListener('input', onDimHInput);
+
+  function syncDimFields(){
+    // Whichever box was derived from the ratio should stay in sync when
+    // the active ratio changes; manually-entered values are left alone.
+    if (dimW.value && hDerived){
+      dimH.value = Math.round(parseFloat(dimW.value) * ratio.h / ratio.w);
+    } else if (dimH.value && wDerived){
+      dimW.value = Math.round(parseFloat(dimH.value) * ratio.w / ratio.h);
+    }
+    updateCalcNote();
+    validateExportSize();
+  }
+
+  function layoutFrame(){
+    const r = ratio.w / ratio.h;
+    const maxDim = STAGE * 0.86;
+    if (r >= 1){
+      frameW = maxDim;
+      frameH = frameW / r;
+      if (frameH > maxDim){ frameH = maxDim; frameW = frameH*r; }
+    } else {
+      frameH = maxDim;
+      frameW = frameH * r;
+      if (frameW > maxDim){ frameW = maxDim; frameH = frameW/r; }
+    }
+    if (!frameEl){
+      frameEl = document.createElement('div');
+      frameEl.className = 'frame';
+      stage.appendChild(frameEl);
+    }
+    frameEl.style.width = frameW + 'px';
+    frameEl.style.height = frameH + 'px';
+    frameEl.style.left = ((STAGE-frameW)/2) + 'px';
+    frameEl.style.top = ((STAGE-frameH)/2) + 'px';
+    updateGridGuide();
+  }
+
+  // Shows the center square that an Instagram grid thumbnail would use,
+  // regardless of the aspect ratio actually being cropped to - so a 4:5
+  // portrait or 16:9 landscape crop can be checked against what its
+  // square grid preview will look like.
+  function updateGridGuide(){
+    if (!showGridGuide.checked){
+      if (guideEl) guideEl.style.display = 'none';
+      return;
+    }
+    if (!guideEl){
+      guideEl = document.createElement('div');
+      guideEl.className = 'grid-guide';
+      stage.appendChild(guideEl);
+    }
+    const side = Math.min(frameW, frameH);
+    const frameLeft = (STAGE-frameW)/2, frameTop = (STAGE-frameH)/2;
+    guideEl.style.display = 'block';
+    guideEl.style.width = side + 'px';
+    guideEl.style.height = side + 'px';
+    guideEl.style.left = (frameLeft + (frameW-side)/2) + 'px';
+    guideEl.style.top = (frameTop + (frameH-side)/2) + 'px';
+  }
+
+  showGridGuide.addEventListener('change', updateGridGuide);
+
+  function fitImageToFrame(){
+    baseScale = Math.max(frameW/naturalW, frameH/naturalH);
+    zoomFactor = 1;
+    zoomSlider.value = 1;
+    const scale = baseScale;
+    const dispW = naturalW*scale, dispH = naturalH*scale;
+    const frameLeft = (STAGE-frameW)/2, frameTop = (STAGE-frameH)/2;
+    imgX = frameLeft - (dispW-frameW)/2;
+    imgY = frameTop - (dispH-frameH)/2;
+    applyImageTransform();
+  }
+
+  function currentScale(){ return baseScale*zoomFactor; }
+
+  // The CSS (flex-grow + aspect-ratio) gets close on its own, but when the
+  // sidebar is taller than the space available for the frame's width, the
+  // aspect-ratio and the flex-grown height fight each other and the box
+  // stops being square. Read the browser's own resolved layout (is .app
+  // actually laid out as a row right now?) and, on desktop, explicitly
+  // size the box to the *largest square* that fits both the sidebar's
+  // height and the available width.
+  function isDesktopLayout(){
+    return getComputedStyle(appEl).flexDirection !== 'column';
+  }
+
+  function syncStageSquare(){
+    if (!isDesktopLayout()){
+      stage.style.width = '';
+      stage.style.height = '';
+      stage.style.flex = '';
+      return;
+    }
+    const panelHeight = controlsPanel.getBoundingClientRect().height;
+    const headingHeight = stageHeading.getBoundingClientRect().height;
+    const availableHeight = panelHeight - headingHeight;
+    // Cap against the viewport itself, not stage-wrap's currently allocated
+    // flex share - the box (plus its heading) should reach the sidebar's
+    // full height whenever the window is remotely wide enough for that,
+    // rather than settling for whatever narrower space flex handed it.
+    const viewportCeiling = window.innerWidth - 80;
+    const size = Math.max(240, Math.min(availableHeight, viewportCeiling));
+    // flex-grow:1 (from the base CSS) would otherwise keep stretching the
+    // box to fill any leftover space in the column beyond this explicit
+    // size - pin it so the square we just computed actually sticks.
+    stage.style.flex = '0 0 auto';
+    stage.style.width = size + 'px';
+    stage.style.height = size + 'px';
+  }
+
+  function handleStageResize(newStage){
+    if (!newStage || Math.abs(newStage - STAGE) < 0.5) return;
+    const factor = newStage / STAGE;
+    STAGE = newStage;
+    layoutFrame();
+    if (img){
+      baseScale *= factor;
+      imgX *= factor;
+      imgY *= factor;
+      applyImageTransform();
+    }
+  }
+
+  function clampPosition(){
+    const scale = currentScale();
+    const dispW = naturalW*scale, dispH = naturalH*scale;
+    const frameLeft = (STAGE-frameW)/2, frameTop = (STAGE-frameH)/2;
+    const minX = frameLeft+frameW-dispW, maxX = frameLeft;
+    const minY = frameTop+frameH-dispH, maxY = frameTop;
+    imgX = Math.min(maxX, Math.max(minX, imgX));
+    imgY = Math.min(maxY, Math.max(minY, imgY));
+  }
+
+  function applyImageTransform(){
+    if (!imgEl) return;
+    clampPosition();
+    const scale = currentScale();
+    imgEl.style.width = (naturalW*scale) + 'px';
+    imgEl.style.height = (naturalH*scale) + 'px';
+    imgEl.style.transform = `translate(${imgX}px, ${imgY}px)`;
+  }
+
+  function zoomAroundFrameCenter(newZoomFactor){
+    const oldScale = currentScale();
+    const frameLeft = (STAGE-frameW)/2, frameTop = (STAGE-frameH)/2;
+    const centerX = frameLeft + frameW/2, centerY = frameTop + frameH/2;
+    // The point in the image currently under the frame's center...
+    const pointX = (centerX - imgX) / oldScale;
+    const pointY = (centerY - imgY) / oldScale;
+    zoomFactor = Math.min(4, Math.max(1, newZoomFactor));
+    const newScale = currentScale();
+    // ...stays under the frame's center after rescaling.
+    imgX = centerX - pointX * newScale;
+    imgY = centerY - pointY * newScale;
+    applyImageTransform();
+  }
+
+  zoomSlider.addEventListener('input', () => {
+    zoomAroundFrameCenter(parseFloat(zoomSlider.value));
+    zoomSlider.value = zoomFactor;
+  });
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) loadFile(file);
+  });
+
+  // Drop anywhere in the window, not just on the crop box. In the Mac app the
+  // native side intercepts image drops before they reach the page (so it can
+  // see the file's folder); this stays as the fallback and the browser path.
+  ['dragenter','dragover'].forEach((type) => {
+    document.addEventListener(type, (e) => { e.preventDefault(); });
+  });
+  document.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) loadFile(file);
+  });
+
+  function loadImageSource(src, name){
+    originalName = String(name || 'photo').replace(/\.[^/.]+$/, '') || 'photo';
+    const image = new Image();
+    image.onload = () => {
+      naturalW = image.naturalWidth;
+      naturalH = image.naturalHeight;
+      img = image;
+      placeholder.style.display = 'none';
+      if (imgEl) imgEl.remove();
+      imgEl = document.createElement('img');
+      imgEl.className = 'photo';
+      imgEl.src = src;
+      imgEl.draggable = false;
+      stage.insertBefore(imgEl, frameEl || null);
+      layoutFrame();
+      fitImageToFrame();
+      downloadBtn.disabled = false;
+      hint.textContent = 'Drag the photo to reposition. Use the zoom slider or scroll to scale.';
+    };
+    image.src = src;
+  }
+
+  function loadFile(file){
+    loadImageSource(URL.createObjectURL(file), file.name);
+  }
+
+  // How the Mac app hands over photos dropped on the window, opened with
+  // "Open With", or dropped on the Dock icon.
+  window.croppenheimerLoadImage = loadImageSource;
+
+  function touchDistance(touches){
+    const dx = touches[1].clientX - touches[0].clientX;
+    const dy = touches[1].clientY - touches[0].clientY;
+    return Math.hypot(dx, dy);
+  }
+
+  function startDrag(p){
+    dragging = true;
+    pinching = false;
+    stage.classList.add('dragging');
+    dragStartX = p.x; dragStartY = p.y;
+    startImgX = imgX; startImgY = imgY;
+  }
+
+  function pointerDown(e){
+    if (!img) return;
+    if (e.touches && e.touches.length === 2){
+      // Second finger down - switch from dragging to a pinch gesture.
+      dragging = false;
+      stage.classList.remove('dragging');
+      pinching = true;
+      pinchStartDist = touchDistance(e.touches);
+      pinchStartZoom = zoomFactor;
+      e.preventDefault();
+      return;
+    }
+    startDrag(getPoint(e));
+    e.preventDefault();
+  }
+  function pointerMove(e){
+    if (pinching && e.touches && e.touches.length === 2){
+      const dist = touchDistance(e.touches);
+      if (pinchStartDist > 0){
+        zoomAroundFrameCenter(pinchStartZoom * (dist / pinchStartDist));
+        zoomSlider.value = zoomFactor;
+      }
+      e.preventDefault();
+      return;
+    }
+    if (!dragging) return;
+    const p = getPoint(e);
+    imgX = startImgX + (p.x-dragStartX);
+    imgY = startImgY + (p.y-dragStartY);
+    applyImageTransform();
+    e.preventDefault();
+  }
+  function pointerUp(e){
+    const touches = e && e.touches;
+    if (touches && touches.length === 1 && (pinching || dragging)){
+      // One finger lifted off a pinch - resume dragging with the finger
+      // that's still down, instead of stopping the gesture entirely.
+      startDrag(getPoint({ touches }));
+      return;
+    }
+    if (touches && touches.length > 0) return;
+    dragging = false;
+    pinching = false;
+    stage.classList.remove('dragging');
+  }
+  function getPoint(e){
+    if (e.touches && e.touches[0]) return {x:e.touches[0].clientX, y:e.touches[0].clientY};
+    return {x:e.clientX, y:e.clientY};
+  }
+  stage.addEventListener('mousedown', pointerDown);
+  window.addEventListener('mousemove', pointerMove);
+  window.addEventListener('mouseup', pointerUp);
+  stage.addEventListener('touchstart', pointerDown, {passive:false});
+  window.addEventListener('touchmove', pointerMove, {passive:false});
+  window.addEventListener('touchend', pointerUp, {passive:false});
+  window.addEventListener('touchcancel', pointerUp, {passive:false});
+
+  stage.addEventListener('wheel', (e) => {
+    if (!img) return;
+    e.preventDefault();
+    const delta = -e.deltaY * 0.0015;
+    zoomAroundFrameCenter(zoomFactor + delta);
+    zoomSlider.value = zoomFactor;
+  }, {passive:false});
+
+  downloadBtn.addEventListener('click', () => {
+    if (!img) return;
+    const scale = currentScale();
+    const frameLeft = (STAGE-frameW)/2, frameTop = (STAGE-frameH)/2;
+    const cropX = (frameLeft - imgX)/scale;
+    const cropY = (frameTop - imgY)/scale;
+    const cropW = frameW/scale;
+    const cropH = frameH/scale;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(cropW);
+    canvas.height = Math.round(cropH);
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, canvas.width, canvas.height);
+
+    let outputCanvas = canvas;
+    let dimsSuffix = '';
+    if (useExportSize.checked){
+      const w = Math.round(parseFloat(dimW.value));
+      const h = Math.round(parseFloat(dimH.value));
+      if (w > 0 && h > 0){
+        const resized = document.createElement('canvas');
+        resized.width = w;
+        resized.height = h;
+        resized.getContext('2d').drawImage(canvas, 0, 0, w, h);
+        outputCanvas = resized;
+        dimsSuffix = '-' + w + 'x' + h;
+      }
+    }
+
+    const format = formatSelect.value;
+    const mime = format === 'png' ? 'image/png' : 'image/jpeg';
+    const ext = format === 'png' ? 'png' : 'jpg';
+    outputCanvas.toBlob((blob) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = originalName + '-' + ratio.label.replace(/[^a-z0-9]+/gi,'-').toLowerCase() + dimsSuffix + '.' + ext;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }, mime, 0.92);
+  });
+
+  buildRatioButtons();
+  syncStageSquare();
+  STAGE = stage.clientWidth || STAGE;
+  layoutFrame();
+  updateCalcNote();
+
+  // Keep everything in sync as the stage's rendered size changes - window
+  // resize, orientation change, or the mobile layout kicking in/out.
+  if (typeof ResizeObserver !== 'undefined'){
+    let resizeFrame = null;
+    const ro = new ResizeObserver((entries) => {
+      const newStage = entries[0].contentRect.width;
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(() => handleStageResize(newStage));
+    });
+    ro.observe(stage);
+  } else {
+    window.addEventListener('resize', () => handleStageResize(stage.clientWidth));
+  }
+
+  // The sidebar's height (and so the square target size) can change on
+  // resize even when the stage's own current size doesn't prompt it, so
+  // re-run the square-fit on every resize too.
+  let squareSyncFrame = null;
+  window.addEventListener('resize', () => {
+    if (squareSyncFrame) cancelAnimationFrame(squareSyncFrame);
+    squareSyncFrame = requestAnimationFrame(syncStageSquare);
+  });
+})();
+</script>
+</body>
+</html>
